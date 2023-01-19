@@ -7,58 +7,80 @@ using System.Threading.Tasks;
 
 namespace BinarySearchTree
 {
-    internal class BinarySearchTree<T> where T : IComparable<T>
+    class BinarySearchTree<T> where T : IComparable
     {
-        public T Data;
-        public BinarySearchTree<T> left;
-        public BinarySearchTree<T> right;
+        public Node<T> Root;
         private int size = 0;
-        public BinarySearchTree(T data)
+        public void Add(T data)
         {
-            this.Data = data;
-            this.left = null;
-            this.right = null;
-        }
-        int leftIndex = 0, rightIndex = 0;
-        public void AddNode(T value)
-        {
-            T Nodevalue = this.Data;
-            if (Nodevalue.CompareTo(value) > 0)
+            Node<T> parent = null, current = Root;
+
+            while (current != null)
             {
-                if (this.left == null) this.left = new BinarySearchTree<T>(value);
+                parent = current;
+                if (current.Data.CompareTo(data) >= 0)
+                {
+                    current = current.leftNode;
+                }
+                else if (data.CompareTo(current.Data) >= 0)
+                {
+                    current = current.rightNode;
+                }
                 else
-                    this.left.AddNode(value);
+                {
+                    Console.WriteLine($"{data} is already present in Binary Tree");
+                }
+            }
+            Node<T> newNode = new Node<T>(data);
+
+            if (Root == null)
+            {
+                Root = newNode;
             }
             else
             {
-                if (this.right == null) this.right = new BinarySearchTree<T>(value);
+                if (parent.Data.CompareTo(data) >= 0)
+                {
+                    parent.leftNode = newNode;
+                }
                 else
-                    this.right.AddNode(value);
+                {
+                    parent.rightNode = newNode;
+                }
             }
-
         }
-        public void Display()
+        public void DisplayInorder(Node<T> parent)
         {
-            if (this.left != null)
+            if (parent != null)
             {
                 size++;
-                this.leftIndex++;
-                this.left.Display();
-               
+                DisplayInorder(parent.leftNode);
+                Console.Write(parent.Data + " ");
+                DisplayInorder(parent.rightNode);
             }
-            Console.WriteLine(this.Data);
-            if (this.right != null)
-            {
-                this.rightIndex++;
-                this.right.Display();
-
-            }
-
         }
         public void Size()
         {
-            Console.WriteLine("Size" + " " + (13 + this.leftIndex + this.rightIndex));
+            Console.Write($"\nThe Size of Binary Tree is : {size}\n");
+        }
+        public Node<T> Find(T data, Node<T> parent)
+        {
+            if (parent != null)
+            {
+                if (data.Equals(parent.Data))
+                {
+                    return parent;
+                }
+                if (parent.Data.CompareTo(data) >= 0)
+                {
+                    return Find(data, parent.leftNode);
+                }
+                else
+                {
+                    return Find(data, parent.rightNode);
+                }
+            }
+            return null;
         }
     }
-
 }
