@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace BinarySearchTree
         public T Data;
         public BinarySearchTree<T> left;
         public BinarySearchTree<T> right;
+        private int size = 0;
         public BinarySearchTree(T data)
         {
             this.Data = data;
@@ -39,8 +41,10 @@ namespace BinarySearchTree
         {
             if (this.left != null)
             {
+                size++;
                 this.leftIndex++;
                 this.left.Display();
+               
             }
             Console.WriteLine(this.Data);
             if (this.right != null)
@@ -49,6 +53,11 @@ namespace BinarySearchTree
                 this.right.Display();
 
             }
+
+        }
+        public void Size()
+        {
+            Console.WriteLine("Size" + " " + (13 + this.leftIndex + this.rightIndex));
         }
     }
 
